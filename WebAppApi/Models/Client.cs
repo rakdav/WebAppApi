@@ -14,7 +14,7 @@ public partial class Client
 
     public string? Lastname { get; set; }
 
-    public DateOnly? BirthDate { get; set; }
+    public DateTime? BirthDate { get; set; }
 
     public string? City { get; set; }
 

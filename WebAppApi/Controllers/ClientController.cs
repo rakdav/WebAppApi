@@ -4,6 +4,7 @@ using WebAppApi.Models;
 
 namespace WebAppApi.Controllers
 {
+    [ApiController]
     [Route("api/[controller]")]
     public class ClientController : ControllerBase
     {
@@ -25,14 +26,26 @@ namespace WebAppApi.Controllers
         [HttpPost]
         public void SaveClient([FromBody] Client client)
         {
-            db.Clients.Add(client);
-            db.SaveChanges();
+            if (client != null)
+            {
+                db.Clients.Add(client);
+                db.SaveChanges();
+            }
         }
         [HttpPut]
-        public void UpdateClient([FromBody] Client client)
+        public async Task<ActionResult<Client>> Put(Client user)
         {
-            db.Clients.Update(client);
-            db.SaveChanges();
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            if (!db.Clients.Any(x => x.IdClient == user.IdClient))
+            {
+                return NotFound();
+            }
+            db.Update(user);
+            await db.SaveChangesAsync();
+            return Ok(user);
         }
         [HttpDelete("{id}")]
         public void DeleteProduct(long id)

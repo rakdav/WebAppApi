@@ -10,7 +10,9 @@ builder.Services.AddDbContext<DataContext>(opts => {
 builder.Services.AddControllers();
 var app = builder.Build();
 app.MapControllers();
-app.MapGet("/", () => "Hello World!");
-var context = app.Services.CreateScope().ServiceProvider
-.GetRequiredService<DataContext>();
+app.UseRouting();
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers(); // подключаем маршрутизацию на контроллеры
+});
 app.Run();

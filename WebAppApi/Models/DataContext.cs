@@ -13,6 +13,7 @@ public partial class DataContext : DbContext
     public DataContext(DbContextOptions<DataContext> options)
         : base(options)
     {
+        Database.EnsureCreated();
     }
 
     public virtual DbSet<Acq> Acqs { get; set; }
