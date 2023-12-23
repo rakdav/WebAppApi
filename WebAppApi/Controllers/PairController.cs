@@ -23,10 +23,19 @@ namespace WebAppApi.Controllers
             db.SaveChanges();
         }
         [HttpPut]
-        public void UpdatePair([FromBody] Pair pair)
+        public async Task<ActionResult<Pair>> Put(Pair user)
         {
-            db.Pairs.Update(pair);
-            db.SaveChanges();
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            if (!db.Pairs.Any(x => x.IdPair == user.IdPair))
+            {
+                return NotFound();
+            }
+            db.Update(user);
+            await db.SaveChangesAsync();
+            return Ok(user);
         }
         [HttpDelete("{id}")]
         public void DeletePair(long id)

@@ -29,10 +29,19 @@ namespace WebAppApi.Controllers
             db.SaveChanges();
         }
         [HttpPut]
-        public void UpdateClient([FromBody] Acq acq)
+        public async Task<ActionResult<Acq>> Put(Acq user)
         {
-            db.Acqs.Update(acq);
-            db.SaveChanges();
+            if (user == null)
+            {
+                return BadRequest();
+            }
+            if (!db.Acqs.Any(x => x.IdAcq == user.IdAcq))
+            {
+                return NotFound();
+            }
+            db.Update(user);
+            await db.SaveChangesAsync();
+            return Ok(user);
         }
         [HttpDelete("{id}")]
         public void DeleteProduct(long id)
